@@ -49,6 +49,14 @@ const userSchema = new Schema({
         type: String,
         unique: true,
         required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    country_code: {
+        type: String,
+        required: true
     }
 });
 
@@ -60,8 +68,10 @@ const validationSchema = Joi.object({
     weight: Joi.number().required(),
     blood_type: Joi.string().min(2).required(),
     state: Joi.string().min(1).required(),
-    city: Joi.string().min(1).required()
-});
+    city: Joi.string().min(1).required(),
+    phone: Joi.string().required(),
+    country_code: Joi.string().required()
+}).unknown();
 
 function validator(data) {
     return validationSchema.validate(data);

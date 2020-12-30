@@ -5,7 +5,7 @@ async function saveUser(uid, body) {
     if (error) {
         throw new Error(error.details[0].message);
     }
-    const data = { uid: uid, ...value };
+    const data = { ...value, uid: uid };
     const user = new User(data);
     const savedUser = await user.save();
     return savedUser;
