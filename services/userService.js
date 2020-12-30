@@ -15,8 +15,8 @@ async function getUser(uid) {
     if (!uid) {
         throw new Error("UID cannot be empty");
     }
-    const userExist = await User.findOne({ uid });
-    return userExist;
+    const user = await User.findOne({ uid });
+    return user;
 }
 
 module.exports = {

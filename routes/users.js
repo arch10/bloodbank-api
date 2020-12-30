@@ -7,6 +7,10 @@ router.get("/", async (req, res) => {
     const uid = req.uid;
     try {
         const user = await userService.getUser(uid);
+        if (!user) {
+            res.status(404).json(sendError(404, "Not Found"));
+            return;
+        }
         res.json(user);
     } catch (error) {
         logger.debug(error.message);
