@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { sendError } = require("../util");
-const userService = require("../services/userService");
 const logger = require("../util/logger");
+const userService = require("../services/userService");
 
 router.get("/", async (req, res) => {
     const uid = req.uid;

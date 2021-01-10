@@ -8,7 +8,7 @@ const tokenValidator = require("./middlewares/tokenMiddleware");
 require("dotenv").config();
 
 //Get Routes
-const { userRoute, errorRoute } = require("./routes");
+const { userRoute, requestRoute } = require("./routes");
 
 //Connect to DB
 mongoose.connect(process.env.DB_CONNECT, {
@@ -36,6 +36,7 @@ const contextPath = process.env.CONTEXT_PATH || "/v1";
 
 //Add Routes
 app.use(`${contextPath}/user`, userRoute);
+app.use(`${contextPath}/request`, requestRoute);
 
 const serverPort = process.env.PORT || 8080;
 app.listen(serverPort, () => {
