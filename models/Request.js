@@ -80,11 +80,11 @@ const validationSchema = Joi.object({
     blood_type: Joi.string().min(2).required(),
     state: Joi.string().min(1).required(),
     city: Joi.string().min(1).required(),
-    phone: Joi.string().required(),
+    phone: Joi.string().min(10).required(),
     country_code: Joi.string().required(),
     expiry: Joi.number().required(),
-    desc: Joi.string().max(300),
-    hospital: Joi.string()
+    desc: Joi.string().allow("").max(300),
+    hospital: Joi.string().allow("")
 }).options({ stripUnknown: true });
 
 function validator(data) {
