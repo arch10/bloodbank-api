@@ -1,7 +1,19 @@
 const { Request, validator } = require("../models/Request");
+const { User } = require("../models/User");
 
 async function saveRequest(uid, body) {
-    const { value, error } = validator({ ...body, creator_uid: uid });
+    const user = await User.findOne({ uid });
+    if (!user) {
+        throw new Error("User with uid not found");
+    }
+    const name = user.first_name + " " + user.last_name;
+    const { value, error } = validator({
+        ...body,
+        creator_uid: uid,
+        creator_name: name,
+        phone: user.phone,
+        country_code: user.country_code
+    });
     if (error) {
         throw new Error(error.details[0].message);
     }
