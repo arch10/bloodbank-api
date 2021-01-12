@@ -26,12 +26,13 @@ async function getAllRequests() {
     return Request.find();
 }
 
-async function getRequestByBloodType(bloodType, page, limit) {
+async function getRequestByBloodType(uid, bloodType, page, limit) {
     if (!bloodType) {
         throw new Error("Blood Type cannot be empty");
     }
     return Request.find({
-        blood_type: { $in: getCompatibleBloodTypes(bloodType) }
+        blood_type: { $in: getCompatibleBloodTypes(bloodType) },
+        creator_uid: { $ne: uid }
     })
         .limit(limit * 1)
         .skip((page - 1) * limit);

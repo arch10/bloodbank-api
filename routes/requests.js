@@ -30,8 +30,10 @@ router.get("/", async (req, res) => {
 router.get("/:bloodType", async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query;
+        const uid = req.uid;
         const bloodType = req.params.bloodType;
         const requests = await requestService.getRequestByBloodType(
+            uid,
             bloodType,
             page,
             limit
