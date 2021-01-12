@@ -26,13 +26,15 @@ async function getAllRequests() {
     return Request.find();
 }
 
-async function getRequestByBloodType(bloodType) {
+async function getRequestByBloodType(bloodType, page, limit) {
     if (!bloodType) {
         throw new Error("Blood Type cannot be empty");
     }
     return Request.find({
         blood_type: { $in: getCompatibleBloodTypes(bloodType) }
-    });
+    })
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
 }
 
 function getCompatibleBloodTypes(bloodType) {
@@ -58,11 +60,13 @@ function getCompatibleBloodTypes(bloodType) {
     }
 }
 
-async function getMyRequests(uid) {
+async function getMyRequests(uid, page, limit) {
     if (!uid) {
         throw new Error("UID cannot be empty");
     }
-    return Request.find({ creator_uid: uid });
+    return Request.find({ creator_uid: uid })
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
 }
 
 async function deleteRequest(reqId) {

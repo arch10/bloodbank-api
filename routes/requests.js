@@ -17,8 +17,9 @@ router.post("/", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
+        const { page = 1, limit = 10 } = req.query;
         const uid = req.uid;
-        const requests = await requestService.getMyRequests(uid);
+        const requests = await requestService.getMyRequests(uid, page, limit);
         res.status(200).json(requests);
     } catch (error) {
         logger.debug(error.message);
@@ -28,8 +29,13 @@ router.get("/", async (req, res) => {
 
 router.get("/:bloodType", async (req, res) => {
     try {
+        const { page = 1, limit = 10 } = req.query;
         const bloodType = req.params.bloodType;
-        const requests = await requestService.getRequestByBloodType(bloodType);
+        const requests = await requestService.getRequestByBloodType(
+            bloodType,
+            page,
+            limit
+        );
         res.status(200).json(requests);
     } catch (error) {
         logger.debug(error.message);
