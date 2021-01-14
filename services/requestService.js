@@ -30,9 +30,11 @@ async function getRequestByBloodType(uid, bloodType, page, limit) {
     if (!bloodType) {
         throw new Error("Blood Type cannot be empty");
     }
+    const currentTime = new Date().getTime();
     return Request.find({
         blood_type: { $in: getCompatibleBloodTypes(bloodType) },
-        creator_uid: { $ne: uid }
+        creator_uid: { $ne: uid },
+        expiry: { $gt: currentTime }
     })
         .limit(limit * 1)
         .skip((page - 1) * limit);
