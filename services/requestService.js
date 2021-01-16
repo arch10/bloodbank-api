@@ -26,18 +26,37 @@ async function getAllRequests() {
     return Request.find();
 }
 
-async function getRequestByBloodType(uid, bloodType, page, limit) {
-    if (!bloodType) {
-        throw new Error("Blood Type cannot be empty");
-    }
+async function getRequestByUser(uid, page, limit) {
     const currentTime = new Date().getTime();
-    return Request.find({
-        blood_type: { $in: getCompatibleBloodTypes(bloodType) },
-        creator_uid: { $ne: uid },
-        expiry: { $gt: currentTime }
-    })
-        .limit(limit * 1)
-        .skip((page - 1) * limit);
+    const user = await User.findOne({ uid });
+    if (isValidUser(user)) {
+        return Request.find({
+            blood_type: { $in: getCompatibleBloodTypes(user.blood_type) },
+            city: user.city,
+            state: user.state,
+            creator_uid: { $ne: uid },
+            expiry: { $gt: currentTime }
+        })
+            .limit(limit * 1)
+            .skip((page - 1) * limit);
+    } else {
+        return [];
+    }
+}
+
+function isValidUser(user) {
+    if (user.weight < 50 || !isAllowedAge(user.dob) || !user.donor) {
+        return false;
+    }
+    return true;
+}
+
+function isAllowedAge(dob) {
+    const currentTime = new Date().getTime();
+    const diff = currentTime - dob;
+    // 31449600000 is years in milliseconds
+    const yrs = diff / 31449600000;
+    return yrs > 18;
 }
 
 function getCompatibleBloodTypes(bloodType) {
@@ -82,7 +101,7 @@ async function deleteRequest(reqId) {
 module.exports = {
     saveRequest,
     getAllRequests,
-    getRequestByBloodType,
+    getRequestByUser,
     getMyRequests,
     deleteRequest
 };

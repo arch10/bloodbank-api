@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.get("/me", async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query;
         const uid = req.uid;
@@ -27,14 +27,12 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:bloodType", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query;
         const uid = req.uid;
-        const bloodType = req.params.bloodType;
-        const requests = await requestService.getRequestByBloodType(
+        const requests = await requestService.getRequestByUser(
             uid,
-            bloodType,
             page,
             limit
         );

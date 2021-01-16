@@ -64,6 +64,11 @@ const userSchema = new Schema(
         country_code: {
             type: String,
             required: true
+        },
+        donor: {
+            type: Boolean,
+            default: true,
+            required: true
         }
     },
     {
@@ -85,7 +90,8 @@ const validationSchema = Joi.object({
     state: Joi.string().min(1).required(),
     city: Joi.string().min(1).required(),
     phone: Joi.string().required(),
-    country_code: Joi.string().required()
+    country_code: Joi.string().required(),
+    donor: Joi.bool().required()
 }).options({ stripUnknown: true });
 
 function validator(data) {
